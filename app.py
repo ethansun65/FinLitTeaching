@@ -221,9 +221,14 @@ LESSONS = {
     }
 }
 
+# Initialize page in session state
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+
 # Sidebar navigation
 st.sidebar.title("📚 Learning Hub")
-page = st.sidebar.radio("Navigate", ["Home", "Lessons", "Quizzes", "AI Tutor", "Budget Planner", "Progress"])
+page = st.sidebar.radio("Navigate", ["Home", "Lessons", "Quizzes", "AI Tutor", "Budget Planner", "Progress"], 
+                        key="nav_radio")
 
 # User level selector
 st.sidebar.markdown("---")
@@ -244,23 +249,17 @@ if page == "Home":
     with col1:
         st.markdown("#### 📖 Lessons")
         st.write("Learn financial concepts at your own pace with structured lessons.")
-        if st.button("Start Learning"):
-            st.session_state.page = "Lessons"
-            st.rerun()
+        st.markdown("👉 *Use the sidebar to navigate to Lessons*")
     
     with col2:
         st.markdown("#### ✅ Quizzes")
         st.write("Test your knowledge with AI-generated quizzes tailored to your level.")
-        if st.button("Take Quiz"):
-            st.session_state.page = "Quizzes"
-            st.rerun()
+        st.markdown("👉 *Use the sidebar to navigate to Quizzes*")
     
     with col3:
         st.markdown("#### 🤖 AI Tutor")
         st.write("Ask questions and get personalized financial advice from our AI tutor.")
-        if st.button("Ask Tutor"):
-            st.session_state.page = "AI Tutor"
-            st.rerun()
+        st.markdown("👉 *Use the sidebar to navigate to AI Tutor*")
     
     st.markdown("---")
     st.markdown("### Your Learning Path")
@@ -322,12 +321,8 @@ elif page == "Lessons":
             
             with col2:
                 if st.button("Ask AI About This", key=f"ask_{lesson_name}"):
-                    st.session_state.page = "AI Tutor"
-                    st.session_state.chat_history.append({
-                        "role": "user",
-                        "content": f"I'm learning about {lesson_name}. Can you explain it in more detail?"
-                    })
-                    st.rerun()
+                    # Switch to AI Tutor page via sidebar
+                    st.info("💡 Navigate to 'AI Tutor' in the sidebar to ask questions about this topic!")
 
 # QUIZZES PAGE
 elif page == "Quizzes":
